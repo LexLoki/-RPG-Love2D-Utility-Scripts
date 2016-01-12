@@ -5,6 +5,8 @@
 Requires vector of maps V with each map having:
   - image: The image of the plane
   - speed: Speed of the moving map (tiles per second)
+  - width: Width desirable for the map, in points
+  - height: Width desirable for the map, in points
 
 The order is important, the deepest maps first
   
@@ -14,15 +16,22 @@ The order is important, the deepest maps first
   local parallaxBackground
   
   (LOAD)
+  local screenWidth = love.graphics.getWidth()
+  local screenHeight = love.graphics.getHeight()
   local planoDeep = {
-    love.graphics.newImage("planoDeep.png"),
-    speed = love.graphics.getWidth()/2
+    image = love.graphics.newImage("planoDeep.png"),
+    speed = screenWidth/5,
+    width = screenWidth,
+    height = screenHeight
   }
   local planoBackground = {
-    love.graphics.newImage("planoBackground.png"),
-    speed = love.graphics.getWidth()/5
+    image = love.graphics.newImage("planoBackground.png"),
+    speed = screenWidth/2,
+    width = screenWidth,
+    height = screenHeight
   }
-  parallaxBackground = {planoDeep, planoBackground}
+  local mapsVector = {planoDeep, planoBackground}
+  parallaxBackground = parallax_new(mapsVector)
   
   (UPDATE)
   -- IF YOU WANT TO MOVE WITH THE DEFAULT SPEED, DOESN NOT NEED THE PARAMETER mov
@@ -38,13 +47,17 @@ local updateWithVel
 
 function parallax_new(listOfMaps)
   for i,v in ipairs(listOfMaps) do
-    v.width = v.image:getWidth()
+    v.position = 0
+    v.scale = {
+      x = v.width / v.image:getWidth(),
+      y = v.height / v.image:getHeight()
+    }
   end
   return {list = listOfMaps}
 end
 
 function parallax_update(dt, p, mov)
-  if mov == nil then move = 1 end
+  if mov == nil then mov = 1 end
   for i,v in ipairs(p.list) do
     v.position = v.position + v.speed*mov*dt
     if v.position > v.width then
@@ -56,7 +69,7 @@ end
 function parallax_draw(p)
   for i,v in ipairs(p.list) do
     local pos = v.position
-    love.graphics.draw(v.image, -pos, 0)
-    love.graphics.draw(v.image, v.width-pos, 0)
+    love.graphics.draw(v.image, -pos, 0, 0, v.scale.x, v.scale.y)
+    love.graphics.draw(v.image, v.width-pos, 0, 0, v.scale.x, v.scale.y)
   end
 end
