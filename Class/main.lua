@@ -1,5 +1,6 @@
 require "square"
 require "point"
+
 io.stdout:setvbuf("no")
 
 local testClass, testClasses
@@ -22,15 +23,3 @@ function testClass(someClass, ...)
 end
 
 testClasses()
-
-function love.load()
-  
-end
-
-function love.update(dt)
-  
-end
-
-function love.draw()
-  
-end

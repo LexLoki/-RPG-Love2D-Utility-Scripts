@@ -1,15 +1,11 @@
 require "rectangle"
 
-Square = class_extends(Rectangle)
+Square = class_extends(Rectangle,"Square")
 
 function Square.new(x,y,size)
   local self = Square.newObject(x,y,size,size)
   self.size = size
   return self
-end
-
-function Square:name()
-  return "Square"
 end
 
 function Square:print()

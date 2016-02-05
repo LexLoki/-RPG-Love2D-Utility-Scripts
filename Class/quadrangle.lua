@@ -1,6 +1,6 @@
 require "class"
 
-Quadrangle = class_new()
+Quadrangle = class_new("Quadrangle")
 
 function Quadrangle.new(x,y,width,height,widthAngle, heightAngle)
   local self = Quadrangle.newObject()
@@ -11,10 +11,6 @@ function Quadrangle.new(x,y,width,height,widthAngle, heightAngle)
   self.widthAngle=widthAngle
   self.heightAngle=heightAngle
   return self
-end
-
-function Quadrangle:name()
-  return "Quadrangle"
 end
 
 function Quadrangle:print()

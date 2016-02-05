@@ -1,16 +1,12 @@
 require "class"
 
-Point = class_new()
+Point = class_new("Point")
 
 function Point.new(x,y)
   local self = Point.newObject()
   self.x=x
   self.y=y
   return self
-end
-
-function Point:name()
-  return "Point"
 end
 
 function Point:print()
