@@ -1,43 +1,12 @@
---[[
-Script to simulate class and inheritance in Lua
-How to use:
+--  The MIT License (MIT)
+--  Copyright © 2016 Pietro Ribeiro Pepe.
 
-*Initialize a base class using:
-  myClass = class_new("myClassName")
-When creating a new instance, you need to first initialize it with:
-  local self = myClass.newObject()
-If you pretend to subClass the class, implement the instance creation method as .new
-Then you can set your properties
+--  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+--  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+--  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-*Initialize a subclass (of myClass):
-  subClass = class_extends(myClass,"subClassName")
-When creating a new instance, you need to first initialize it:
-  local self = subClass.newObject(PASS HERE THE PARAMETERS OF THE SUPERCLASS INIT)
-
-*Availables methods for an instance of a class created with a script
-  :class() - Returns the class of the instance
-  :name() - Returns the name of the instance's class, or "unknown" if no name was given
-  :superClass() - Returns the superClass of the instance's class, or NIL if it doesn't have one
-  :superClasses() - Returns an array with all the superClassses
-  :is_a(class) - Checks if the instance is of the given class, or a subclass of it
-  
-*Example
-
-myClass = class_new("myClassName")
-function myClass.new(a,b,c)
-  local self = myClass.newObject()
-  self.a = a
-  self.b = b
-  self.c = c
-end
- 
-subClass = class_extends(myClass,"myClassName")
-function subClass.new(a)
-  local self = subClass.newObject(a,a*2,a*3)
-  return self
-end
-]]
- 
+-- Script to simulate class and inheritance in Lua
+-- Version 2.0 - 2016/04/22
 
 function class_new(name)
   local new_class = {}
@@ -55,7 +24,7 @@ function class_new(name)
         return (superGet or classGet or newinst.super[key])
       end
       function meta.__newindex(table, key, value)
-        if newinst.super[key] == nil then
+        if newinst.super[key] == nil or type(value) == "function" then
           rawset(table,key,value)
         else
           newinst.super[key] = value
