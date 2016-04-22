@@ -1,70 +1,46 @@
---[[ To manage sprite animation (know what frame of the animation you want to reproduce each time), you need to provide:
-  - qFrames: number of frames of the animation
-  - animTime: the duration time desired for the animation
-  - doRepeat: a boolean to state if the animation should loop, when not given, the default is TRUE
-  
-  Run the update function to update the manager
-  
-  To know the actual frame of an animationManager just access the curr_frame property
-  
-  If you stop updating the animation and then need to run again, call the RESTART function (to put the curr_frame back to 1).
-  
-  EXAMPLE CODE:
-  
-  (GLOBAL)
-  local runSpriteSheet
-  local runQuads
-  local myManager
-  
-  (LOAD)
-  runSpriteSheet = love.graphics.newImage("runSheet.png")
-  runQuads = {
-    love.graphics.newQuad(0,0,20,20),
-    love.graphics.newQuad(20,0,20,20),
-    love.graphics.newQuad(40,0,20,20),
-    love.graphics.newQuad(60,0,20,20)
-  }
-  myManager = animationManager_new(4,0.6)
-  -- manager loaded ready for loop
-  
-  (UPDATE)
-  animationManager_update(dt, myManager)
-  
-  (DRAW)
-  local actualFrame = myManager.curr_frame
-  love.graphics.draw(runSpriteSheet,runQuads[actualFrame])
-  ]]
+--  The MIT License (MIT)
+--  Copyright © 2016 Pietro Ribeiro Pepe.
 
-function animationManager_new(qFrames, animTime, doRepeat)
-  local anim = {}
-  anim.time = animTime
-  anim.capTime = animTime / qFrames
-  anim.qFrames = qFrames
-  anim.canRepeat = (doRepeat==nil or doRepeat==true)
-  animComp.restart(anim)
-  return anim;
+--  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+--  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+--  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+-- Script to help managing animation
+-- Version 2.0 - 2016/04/22
+
+AnimationManager = {}
+
+function AnimationManager.new(qFrames, animTime, doRepeat)
+  local self = {}
+  setmetatable(self,{__index=animationManager})
+  self.time = animTime
+  self.capTime = animTime / qFrames
+  self.qFrames = qFrames
+  self.canRepeat = (doRepeat==nil or doRepeat==true)
+  self:restart()
+  return self;
 end
 
-function animationManager_update(dt, anim)
-  anim.curr_time = anim.curr_time + dt
-  if anim.curr_time > anim.capTime then
-    anim.curr_time = anim.curr_time - anim.capTime
-    anim.curr_frame = anim.curr_frame+1
-    if anim.curr_frame > anim.qFrames then
-      if not anim.canRepeat then
-        anim.curr_frame = anim.qFrames
-        anim.finished = true
+function AnimationManager:update(dt)
+  self.curr_time = self.curr_time + dt
+  if self.curr_time > self.capTime then
+    self.curr_time = self.curr_time - self.capTime
+    self.curr_frame = self.curr_frame+1
+    if self.curr_frame > self.qFrames then
+      if not self.canRepeat then
+        self.curr_frame = self.qFrames
+        self.finished = true
         return -1
       else
-        anim.curr_frame = 1
+        self.curr_frame = 1
       end
     end
   end
-  return anim.curr_frame
+  return self.curr_frame
 end
 
-function animationManager_restart(anim)
-  anim.curr_frame = 1
-  anim.curr_time = 0
-  anim.finished = false
+function AnimationManager:restart()
+  self.curr_frame = 1
+  self.curr_time = 0
+  self.finished = false
 end
