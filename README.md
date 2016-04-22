@@ -1,6 +1,7 @@
 # -RPG-Love2D-Utility-Scripts
 This is a collection of Lua scripts made for LÖVE game development, used by the RPG - Rio PUC Games game development group
 * Class
+* AnimationManager
 * Parallax
 * Scripts to show our logo
 
@@ -39,6 +40,7 @@ When creating a new instance for the subClass, you need to first initialize it:
 ####Example
 Below there is a simple example using a base class, a sub class and overriding a method, there are more examples in the `Class` folder
 ```Lua
+require "class"
 myClass = class_new("myClassName")
 function myClass.new(a,b,c)
   local self = myClass.newObject()
@@ -101,3 +103,50 @@ If you stop updating the animation and then need to run again, call the `:restar
     love.graphics.draw(runSpriteSheet,runQuads[actualFrame])
   end
 ```
+
+##Parallax
+Script to help implementing horizontal Parallax effect
+
+####How to use:
+`Parallax.new` requires an array of maps V with each map having:
+  - image: The image of the plane
+  - speed: Speed of the moving map (tiles per second)
+  - width: Width desirable for the map, in points
+  - height: Width desirable for the map, in points
+
+Call `:update(dt,mov)` to update the Parallax movement, where mov is a factor that alters the speed (mov=2 will double the speed, mov=0.25 will divide it by 4). When not given, the default is 1.
+
+The order is important, the deepest map goes first in the array
+####Code example:
+```Lua
+  require "Parallax"
+  local parallaxBackground
+  
+  function love.load()
+    local screenWidth,screenHeight = love.graphics.getDimensions()
+    local planeDeep = {
+     image = love.graphics.newImage("planoDeep.png"),
+      speed = screenWidth/5,
+      width = screenWidth,
+      height = screenHeight
+    }
+    local planeBackground = {
+      image = love.graphics.newImage("planoBackground.png"),
+      speed = screenWidth/2,
+      width = screenWidth,
+      height = screenHeight
+    }
+    local mapsVector = {planeDeep, planeBackground}
+    parallaxBackground = Parallax.new(mapsVector)
+  
+  function love.update(dt)
+    -- IF YOU WANT TO MOVE WITH THE DEFAULT SPEED, DOES NOT NEED THE PARAMETER mov
+    parallaxBackground:update(dt)
+    -- MOV parameter, again, is to change somehow the SPEED, for example, make the parallax move 50% slower -> mov = 0.5
+    --parallaxBackground:update(dt,0.5)
+  end
+  
+  function love.draw()
+    parallaxBackground:draw()
+  end
+  ```
