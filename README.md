@@ -60,3 +60,44 @@ function subClass:getPower()
   return self.multiplier * self.super:getPower()
 end
 ```
+
+##AnimationManager
+To manage sprite animation (know what frame of the animation you want to reproduce each time), you need to provide to the `AnimationManager.new` function:
+* qFrames: number of frames of the animation
+* animTime: the duration time desired for the animation
+* doRepeat: a boolean to state if the animation should loop, when not given, the default is TRUE
+  
+Run the `:update(dt)` function to update the manager.
+  
+To know the actual frame of an animationManager just access the curr_frame property.
+  
+If you stop updating the animation and then need to run again, call the `:restart` function (to put the curr_frame back to 1).
+  
+###Code example:
+```Lua
+  require "AnimationManager"
+  local runSpriteSheet
+  local runQuads
+  local myManager
+  
+  function love.load()
+    runSpriteSheet = love.graphics.newImage("runSheet.png")
+    runQuads = {
+      love.graphics.newQuad(0,0,20,20),
+      love.graphics.newQuad(20,0,20,20),
+      love.graphics.newQuad(40,0,20,20),
+      love.graphics.newQuad(60,0,20,20)
+    }
+    myManager = animationManager_new(4,0.6)
+    -- manager loaded ready for loop
+  end
+  
+  function love.update(dt)
+    myManager:update(dt)
+  end
+  
+  function love.draw()
+    local actualFrame = myManager.curr_frame
+    love.graphics.draw(runSpriteSheet,runQuads[actualFrame])
+  end
+```
