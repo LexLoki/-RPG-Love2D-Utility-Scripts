@@ -1,6 +1,7 @@
-require "rectangle"
+local Rectangle = require "rectangle"
+local class = require "class"
 
-Square = class_extends(Rectangle,"Square")
+local Square = class.extends(Rectangle,"Square")
 
 function Square.new(x,y,size)
   local self = Square.newObject(x,y,size,size)
@@ -14,3 +15,5 @@ function Square:print()
   print("\ty = " .. self.y)
   print("\tsize = " .. self.size .."\n}")
 end
+
+return Square

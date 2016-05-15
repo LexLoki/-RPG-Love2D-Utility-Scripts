@@ -1,6 +1,7 @@
-require "quadrangle"
+local Quadrangle = require "quadrangle"
+local class = require "class"
 
-Rectangle = class_extends(Quadrangle,"Rectangle")
+local Rectangle = class.extends(Quadrangle,"Rectangle")
 
 function Rectangle.new(x,y,width,height)
   return Rectangle.newObject(x,y,width,height,0,math.pi/2)--Rectangle:superClass().new(x,y,width,height)
@@ -13,3 +14,5 @@ function Rectangle:print()
   print("\twidth = " .. self.width)
   print("\theight = " .. self.height .."\n}")
 end
+
+return Rectangle

@@ -1,6 +1,6 @@
-require "class"
+local class = require "class"
 
-Quadrangle = class_new("Quadrangle")
+local Quadrangle = class.new("Quadrangle")
 
 function Quadrangle.new(x,y,width,height,widthAngle, heightAngle)
   local self = Quadrangle.newObject()
@@ -22,3 +22,5 @@ function Quadrangle:print()
   print("\twidthAngle = " .. self.width)
   print("\theightAngle = " .. self.height .."\n}")
 end
+
+return Quadrangle

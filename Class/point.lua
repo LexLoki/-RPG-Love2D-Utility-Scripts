@@ -1,6 +1,6 @@
-require "class"
+local class = require "class"
 
-Point = class_new("Point")
+local Point = class.new("Point")
 
 function Point.new(x,y)
   local self = Point.newObject()
@@ -14,3 +14,5 @@ function Point:print()
   print("\tx = " .. self.x)
   print("\ty = " .. self.y .."\n}")
 end
+
+return Point

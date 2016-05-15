@@ -1,5 +1,7 @@
-require "square"
-require "point"
+local Square = require "square"
+local Point = require "point"
+local Rectangle = require "Rectangle"
+local Quadrangle = require "Quadrangle"
 
 io.stdout:setvbuf("no")
 
@@ -14,10 +16,10 @@ end
 
 function testClass(someClass, ...)
   local n = someClass.new(...)
-  print("is " .. Square:name() .. ": " .. tostring(n:is_a(Square)))
-  print("is " .. Rectangle:name() .. ": " .. tostring(n:is_a(Rectangle)))
-  print("is " .. Quadrangle:name() .. ": " .. tostring(n:is_a(Quadrangle)))
-  print("is " .. Point:name() .. ": " .. tostring(n:is_a(Point)))
+  print(n:name().." is " .. Square:name() .. ": " .. tostring(n:is_a(Square)))
+  print(n:name().." is " .. Rectangle:name() .. ": " .. tostring(n:is_a(Rectangle)))
+  print(n:name().." is " .. Quadrangle:name() .. ": " .. tostring(n:is_a(Quadrangle)))
+  print(n:name().." is " .. Point:name() .. ": " .. tostring(n:is_a(Point)))
   n:print()
   print()
 end
