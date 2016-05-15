@@ -22,6 +22,7 @@ When creating a new instance, you need to first initialize it with:
   -- Set properties and return self
 ```
 If you pretend to subClass the class, implement the instance creation method as .new
+
 Initialize a subclass (of myClass):
 ```Lua
   subClass = class.extends(myClass,"subClassName")
