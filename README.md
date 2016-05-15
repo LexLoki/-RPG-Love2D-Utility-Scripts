@@ -8,10 +8,13 @@ This is a collection of Lua scripts made for LÖVE game development, used by the
 ## Class
 Script to simulate class and inheritance in Lua
 #### How to use:
-
+Load the library:
+```Lua
+  class = require 'class'
+```
 Initialize a base class using:
 ```Lua
-  myClass = class_new("myClassName")
+  myClass = class.new("myClassName")
 ```
 When creating a new instance, you need to first initialize it with:
 ```Lua
@@ -21,7 +24,7 @@ When creating a new instance, you need to first initialize it with:
 If you pretend to subClass the class, implement the instance creation method as .new
 Initialize a subclass (of myClass):
 ```Lua
-  subClass = class_extends(myClass,"subClassName")
+  subClass = class.extends(myClass,"subClassName")
 ```
 When creating a new instance for the subClass, you need to first initialize it:
 ```Lua
@@ -40,8 +43,8 @@ When creating a new instance for the subClass, you need to first initialize it:
 ####Example
 Below there is a simple example using a base class, a sub class and overriding a method, there are more examples in the `Class` folder
 ```Lua
-require "class"
-myClass = class_new("myClassName")
+local class = require "class"
+myClass = class.new("myClassName")
 function myClass.new(a,b,c)
   local self = myClass.newObject()
   self.a = a
@@ -52,13 +55,13 @@ function myClass:getPower()
   return self.a + self.b + self.c
 end
  
-subClass = class_extends(myClass,"myClassName")
+subClass = class.extends(myClass,"myClassName")
 function subClass.new(a,multiplier)
-  local self = subClass.newObject(a,a*2,a*3)
+  local self = subClass.newObject(a,a*2,a*3) --Initializes a new object using the .new from the superClass (myClass)
   self.multiplier = multiplier
   return self
 end
-function subClass:getPower()
+function subClass:getPower() --overrides the function from the superClass (myClass)
   return self.multiplier * self.super:getPower()
 end
 ```
